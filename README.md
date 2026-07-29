@@ -26,6 +26,7 @@
   - [4. Frontend (Next.js)](#4-frontend-nextjs)
 - [Variables d'environnement](#-variables-denvironnement)
 - [Lancer le projet](#-lancer-le-projet)
+- [Déploiement en production](#-déploiement-en-production)
 - [Documentation API](#-documentation-api)
 
 ---
@@ -77,7 +78,7 @@ ResourcesRelationnelles/
 ### 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/schhean/ResourcesRelationnelles.git
+git clone https://github.com/thexch/RessourcesRelationnelles.git
 cd ResourcesRelationnelles
 ```
 
@@ -125,6 +126,7 @@ Contenu du fichier `.env` :
 ```env
 DATABASE_URL="postgresql://admin:password123@localhost:5433/db_ressources"
 JWT_SECRET="votre_secret_jwt_tres_securise"
+FRONTEND_URL="http://localhost:3000"
 PORT=3001
 ```
 
@@ -181,6 +183,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 |---|---|---|
 | `DATABASE_URL` | URL de connexion PostgreSQL | `postgresql://admin:password123@localhost:5433/db_ressources` |
 | `JWT_SECRET` | Clé secrète pour signer les tokens JWT | `mon_super_secret` |
+| `FRONTEND_URL` | Origine autorisée par la configuration CORS | `http://localhost:3000` |
 | `PORT` | Port d'écoute du serveur | `3001` |
 
 ### Frontend (`frontend/.env.local`)
@@ -217,6 +220,44 @@ npm run dev
 
 ---
 
+## ☁️ Déploiement en production
+
+L'environnement de production est constitué de deux projets Vercel reliés à ce dépôt et d'une base PostgreSQL hébergée sur Neon :
+
+- **Frontend Next.js** : [ressources-relationnelles-frontend-thexchs-projects.vercel.app](https://ressources-relationnelles-frontend-thexchs-projects.vercel.app)
+- **Backend NestJS et Swagger** : [ressources-relationnelles-backend.vercel.app/api](https://ressources-relationnelles-backend.vercel.app/api)
+- **Base de données** : PostgreSQL sur Neon, accessible uniquement par le backend
+
+Chaque projet Vercel utilise son propre dossier racine :
+
+```text
+frontend/  -> projet Vercel frontend
+backend/   -> projet Vercel backend
+```
+
+Les secrets ne sont pas enregistrés dans Git. Ils sont configurés dans les variables d'environnement Vercel :
+
+```text
+Backend : DATABASE_URL, JWT_SECRET, FRONTEND_URL
+Frontend : NEXTAUTH_URL, NEXTAUTH_SECRET, NEXT_PUBLIC_API_URL
+```
+
+La livraison suit ce processus :
+
+```text
+branche dédiée -> pull request vers dev -> tests et builds GitHub Actions
+-> pull request vers main -> contrôles obligatoires -> déploiement Vercel
+```
+
+La branche `main` est protégée contre les push directs, les suppressions et les force push. Après une fusion validée dans `main`, Vercel construit et publie automatiquement le frontend et le backend. Les migrations de production sont appliquées avec :
+
+```bash
+cd backend
+npx prisma migrate deploy
+```
+
+---
+
 ## 📖 Documentation API
 
 Une documentation Swagger est disponible automatiquement lorsque le backend est lancé :
@@ -236,6 +277,14 @@ cd backend
 npm run test          # Tests unitaires
 npm run test:cov      # Tests avec couverture de code
 npm run test:e2e      # Tests end-to-end
+```
+
+Pour lancer les tests et le build du frontend :
+
+```bash
+cd frontend
+npm test
+npm run build
 ```
 
 ---

@@ -6,14 +6,14 @@ export default function ContactPage() {
         <h1 className="mt-3 text-3xl font-bold text-[#1B365D]">Contact</h1>
         <div className="mt-8 space-y-5 text-gray-600 leading-relaxed">
           <p>
-            Pour toute question concernant la plateforme, les ressources ou un probleme de compte, vous pouvez contacter l'equipe projet.
+            Pour toute question concernant la plateforme, les ressources ou un probleme de compte, vous pouvez contacter l&apos;equipe projet.
           </p>
           <div className="rounded-lg border border-blue-100 bg-blue-50 p-5 text-[#1B365D]">
             <p className="font-semibold">Email</p>
             <p className="mt-1">contact@ressources-relationnelles.fr</p>
           </div>
           <p>
-            Cette adresse est provisoire et peut etre remplacee par l'adresse officielle de votre groupe ou de votre organisation.
+            Cette adresse est provisoire et peut etre remplacee par l&apos;adresse officielle de votre groupe ou de votre organisation.
           </p>
         </div>
       </section>

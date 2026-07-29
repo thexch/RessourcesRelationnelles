@@ -8,6 +8,7 @@ import { Spinner } from "@heroui/spinner";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
 import { Lock, Eye, EyeOff } from "lucide-react";
 import { addToast } from "@heroui/toast";
+import { apiUrl } from "@/lib/api";
 
 export default function ProfilePage() {
     const { data: session } = useSession();
@@ -48,7 +49,7 @@ export default function ProfilePage() {
         const fetchProfile = async () => {
             if (!token) return;
             try {
-                const res = await fetch("http://localhost:3001/user/profile", {
+                const res = await fetch(apiUrl("/user/profile"), {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (res.ok) {
@@ -70,7 +71,7 @@ export default function ProfilePage() {
     const handleSaveProfile = async () => {
         setSaving(true);
         try {
-            const res = await fetch("http://localhost:3001/user/profile", {
+            const res = await fetch(apiUrl("/user/profile"), {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ firstName, lastName, email })
@@ -106,7 +107,7 @@ export default function ProfilePage() {
         }
 
         try {
-            const res = await fetch("http://localhost:3001/user/profile/password", {
+            const res = await fetch(apiUrl("/user/profile/password"), {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ oldPassword, newPassword })

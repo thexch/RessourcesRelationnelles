@@ -15,6 +15,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { addToast } from "@heroui/toast";
 import { signIn } from "next-auth/react";
+import { apiUrl } from "@/lib/api";
 
 export const LockIcon = (props: any) => {
   return (
@@ -97,7 +98,7 @@ export default function AuthModal() {
         password: data.passwordInscription,
       };
 
-      const response = await fetch("http://localhost:3001/auth/register", {
+      const response = await fetch(apiUrl("/auth/register"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

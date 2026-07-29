@@ -6,6 +6,7 @@ import { Chip } from "@heroui/chip";
 import { Spinner } from "@heroui/spinner";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import { apiUrl } from "@/lib/api";
 
 type PublicResourcesListProps = {
   search: string;
@@ -19,7 +20,7 @@ export default function PublicResourcesList({ search, category }: PublicResource
   useEffect(() => {
     const fetchRessources = async () => {
       try {
-        const res = await fetch("http://localhost:3001/ressource");
+        const res = await fetch(apiUrl("/ressource"));
         const data = await res.json();
         if (res.ok && Array.isArray(data)) setRessources(data);
       } catch (error) {

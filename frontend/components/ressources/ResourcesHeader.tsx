@@ -7,6 +7,7 @@ import { Tabs, Tab } from "@heroui/tabs";
 import { Search } from "lucide-react";
 import { useSession } from "next-auth/react";
 
+import { apiUrl } from "@/lib/api";
 import PublicResourcesList from "./PublicResourcesList";
 import MyResourcesManager from "./MyResourcesManager";
 
@@ -20,7 +21,7 @@ export default function ResourcesPage() {
     useEffect(() => {
         const fetchCats = async () => {
             try {
-                const res = await fetch("http://localhost:3001/category");
+                const res = await fetch(apiUrl("/category"));
                 const data = await res.json();
                 if (Array.isArray(data)) setAvailableCategories(data);
             } catch (error) {

@@ -17,6 +17,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/d
 import { Calendar, MessageSquare, ArrowLeft, Reply, Trash2, MoreHorizontal, Heart } from "lucide-react";
 import Link from "next/link";
 import { addToast } from "@heroui/toast";
+import { apiUrl } from "@/lib/api";
 
 export default function RessourceDetail() {
   const { id } = useParams();
@@ -37,7 +38,7 @@ export default function RessourceDetail() {
       const headers: HeadersInit = {};
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const res = await fetch(`http://localhost:3001/ressource/${id}`, { headers });
+      const res = await fetch(apiUrl(`/ressource/${id}`), { headers });
       if (!res.ok) throw new Error("Ressource non trouvée");
       const data = await res.json();
       setRessource(data);
@@ -65,7 +66,7 @@ export default function RessourceDetail() {
     }));
 
     try {
-      const res = await fetch(`http://localhost:3001/ressource/${id}/favorite`, {
+      const res = await fetch(apiUrl(`/ressource/${id}/favorite`), {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
       });
@@ -89,7 +90,7 @@ export default function RessourceDetail() {
   const handlePostComment = async (content: string, parentId: number | null = null) => {
     if (!content.trim()) return;
     try {
-      const res = await fetch(`http://localhost:3001/comment`, {
+      const res = await fetch(apiUrl("/comment"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +110,7 @@ export default function RessourceDetail() {
   const handleConfirmDelete = async () => {
     if (!commentToDelete) return;
     try {
-      await fetch(`http://localhost:3001/comment/${commentToDelete}`, {
+      await fetch(apiUrl(`/comment/${commentToDelete}`), {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });
@@ -231,7 +232,7 @@ export default function RessourceDetail() {
 
                       {replyToId === root.id && (
                         <div className="mt-5 pt-5 border-t border-gray-50 space-y-3">
-                          <Textarea autoFocus variant="bordered" placeholder={`Répondre à ${root.author?.firstName}...`} value={replyInput} onValueChange={setReplyInput} />
+                          <Textarea variant="bordered" placeholder={`Répondre à ${root.author?.firstName}...`} value={replyInput} onValueChange={setReplyInput} />
                           <div className="flex justify-end gap-2">
                             <Button size="sm" variant="light" onPress={() => setReplyToId(null)}>Annuler</Button>
                             <Button size="sm" color="primary" className="font-bold" onPress={() => handlePostComment(replyInput, root.id)}>Répondre</Button>

@@ -70,7 +70,7 @@ export default function AdminDashboard() {
                         <Tab key="users" title="Gestion des comptes">
                             <div className="mt-4 sm:mt-6 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
                                 <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2">Gestion des utilisateurs</h2>
-                                <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6">Consultez la liste des citoyens inscrits et gérez l'activation ou les rôles des comptes.</p>
+                                <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6">Consultez la liste des citoyens inscrits et gérez l&apos;activation ou les rôles des comptes.</p>
                                 <AdminUsersManager token={(session as any)?.accessToken} currentUserId={currentUserId} role={role} />
                             </div>
                         </Tab>
@@ -79,8 +79,8 @@ export default function AdminDashboard() {
                     {isAdmin && (
                         <Tab key="stats" title="Statistiques">
                             <div className="mt-4 sm:mt-6 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
-                                <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2">Tableau de bord d'activité</h2>
-                                <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6">Suivez l'évolution de la plateforme et exportez vos données.</p>
+                                <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2">Tableau de bord d&apos;activité</h2>
+                                <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6">Suivez l&apos;évolution de la plateforme et exportez vos données.</p>
                                 <AdminStatsManager token={(session as any)?.accessToken} />
                             </div>
                         </Tab>

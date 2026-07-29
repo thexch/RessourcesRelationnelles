@@ -18,6 +18,7 @@ import { Spinner } from "@heroui/spinner";
 import { Tabs, Tab } from "@heroui/tabs";
 import { Trash2, Edit, Plus, Info, BookOpen, Heart } from "lucide-react";
 import { addToast } from "@heroui/toast";
+import { apiUrl } from "@/lib/api";
 import FavoriteResourcesList from "./FavoriteResourcesList";
 
 type MyRessourceManagerProps = {
@@ -51,8 +52,8 @@ export default function MyResourcesManager({ token, search, category }: MyRessou
         setLoading(true);
         try {
             const [resRessources, resCats] = await Promise.all([
-                fetch("http://localhost:3001/ressource/me", { headers: { Authorization: `Bearer ${token}` } }),
-                fetch("http://localhost:3001/category")
+                fetch(apiUrl("/ressource/me"), { headers: { Authorization: `Bearer ${token}` } }),
+                fetch(apiUrl("/category"))
             ]);
             const dataR = await resRessources.json();
             const dataC = await resCats.json();
@@ -87,7 +88,7 @@ export default function MyResourcesManager({ token, search, category }: MyRessou
     };
 
     const handleSubmit = async () => {
-        const url = editingId ? `http://localhost:3001/ressource/${editingId}` : "http://localhost:3001/ressource";
+        const url = editingId ? apiUrl(`/ressource/${editingId}`) : apiUrl("/ressource");
         const method = editingId ? "PUT" : "POST";
         const selectedType = Array.from(formType)[0];
         const selectedCat = Array.from(formCategoryId)[0];
@@ -122,7 +123,7 @@ export default function MyResourcesManager({ token, search, category }: MyRessou
     const handleDelete = async (id: number) => {
         if (!confirm("Voulez-vous vraiment supprimer cette ressource ?")) return;
         try {
-            const res = await fetch(`http://localhost:3001/ressource/${id}`, {
+            const res = await fetch(apiUrl(`/ressource/${id}`), {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` }
             });

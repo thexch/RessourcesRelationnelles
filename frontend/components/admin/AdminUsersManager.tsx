@@ -10,6 +10,7 @@ import { Select, SelectItem } from "@heroui/select";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
 import { Ban, CheckCircle, Trash2, Search, Shield, MessageSquare, FileText, UserCircle } from "lucide-react";
 import { addToast } from "@heroui/toast";
+import { apiUrl } from "@/lib/api";
 
 export default function AdminUsersManager({ token, currentUserId, role }: { token: string, currentUserId: number, role: string }) {
     const [users, setUsers] = useState<any[]>([]);
@@ -24,7 +25,7 @@ export default function AdminUsersManager({ token, currentUserId, role }: { toke
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:3001/admin/users", {
+            const res = await fetch(apiUrl("/admin/users"), {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -53,7 +54,7 @@ export default function AdminUsersManager({ token, currentUserId, role }: { toke
 
     const handleToggleActive = async (id: number, currentStatus: boolean) => {
         try {
-            const res = await fetch(`http://localhost:3001/admin/users/${id}/toggle-active`, {
+            const res = await fetch(apiUrl(`/admin/users/${id}/toggle-active`), {
                 method: "PATCH",
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -70,7 +71,7 @@ export default function AdminUsersManager({ token, currentUserId, role }: { toke
 
     const handleRoleChange = async (id: number, newRole: string) => {
         try {
-            const res = await fetch(`http://localhost:3001/admin/users/${id}/role`, {
+            const res = await fetch(apiUrl(`/admin/users/${id}/role`), {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ role: newRole })
@@ -93,7 +94,7 @@ export default function AdminUsersManager({ token, currentUserId, role }: { toke
     const confirmDelete = async () => {
         if (!userToDelete) return;
         try {
-            const res = await fetch(`http://localhost:3001/admin/users/${userToDelete}`, {
+            const res = await fetch(apiUrl(`/admin/users/${userToDelete}`), {
                 method: "DELETE", headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
@@ -229,7 +230,7 @@ export default function AdminUsersManager({ token, currentUserId, role }: { toke
                         <>
                             <ModalHeader className="text-[#1B365D] font-bold flex gap-2 items-center">
                                 <Trash2 size={20} className="text-danger" />
-                                Suppression d'utilisateur
+                                Suppression d&apos;utilisateur
                             </ModalHeader>
                             <ModalBody className="text-gray-600">
                                 <p className="text-sm md:text-base">Voulez-vous vraiment supprimer cet utilisateur définitivement ?</p>

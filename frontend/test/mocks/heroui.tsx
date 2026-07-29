@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const unwrapText = (value: any) => {
+const unwrapText = (value: any): string => {
   if (typeof value === 'string') return value;
   if (Array.isArray(value)) return value.map(unwrapText).join(' ');
   if (React.isValidElement(value)) return unwrapText((value.props as any).children);

@@ -6,6 +6,7 @@ import { CategoryService } from '../../src/category/category.service';
 import { CommentService } from '../../src/comment/comment.service';
 import { RessourceService } from '../../src/ressource/ressource.service';
 import { StatsService } from '../../src/stats/stats.service';
+import { UserService } from '../../src/user/user.service';
 
 describe('Unit tests - fonctionnalites principales', () => {
   describe('1. Catalogue de ressources', () => {
@@ -158,6 +159,26 @@ describe('Unit tests - fonctionnalites principales', () => {
       await service.create({ name: 'Famille' });
 
       expect(prisma.category.create).toHaveBeenCalledWith({ data: { name: 'Famille' } });
+    });
+
+    it('ne selectionne jamais le mot de passe dans la liste des utilisateurs', async () => {
+      const prisma = {
+        user: { findMany: jest.fn().mockResolvedValue([]) },
+      };
+      const service = new UserService(prisma as any);
+
+      await service.findAllAdmin();
+
+      const selection = prisma.user.findMany.mock.calls[0][0].select;
+      expect(selection.password).toBeUndefined();
+      expect(selection).toEqual(
+        expect.objectContaining({
+          id: true,
+          email: true,
+          role: true,
+          isActive: true,
+        }),
+      );
     });
   });
 

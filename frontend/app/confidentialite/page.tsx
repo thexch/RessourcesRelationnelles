@@ -9,7 +9,7 @@ export default function ConfidentialitePage() {
             Cette page explique de facon simple comment les donnees peuvent etre utilisees dans le cadre de la plateforme.
           </p>
           <p>
-            Les informations de compte servent a identifier les utilisateurs, securiser l'acces et permettre les fonctionnalites de contribution, de favoris et de commentaires.
+            Les informations de compte servent a identifier les utilisateurs, securiser l&apos;acces et permettre les fonctionnalites de contribution, de favoris et de commentaires.
           </p>
           <p>
             Les donnees ne sont pas destinees a etre revendues. Une version complete pourra preciser les durees de conservation et les droits des utilisateurs.

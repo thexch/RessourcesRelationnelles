@@ -10,6 +10,7 @@ import { Input, Textarea } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 import { CheckCircle, XCircle, Ban, Trash2, Edit, Search, Plus, FolderTree, MessageSquare } from "lucide-react";
 import { addToast } from "@heroui/toast";
+import { apiUrl } from "@/lib/api";
 
 export default function AdminRessourcesManager({ token, role }: { token: string, role: string }) {
     const [ressources, setRessources] = useState<any[]>([]);
@@ -47,8 +48,8 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
         setLoading(true);
         try {
             const [resRessources, resCats] = await Promise.all([
-                fetch("http://localhost:3001/admin/ressources", { headers: { Authorization: `Bearer ${token}` } }),
-                fetch("http://localhost:3001/category")
+                fetch(apiUrl("/admin/ressources"), { headers: { Authorization: `Bearer ${token}` } }),
+                fetch(apiUrl("/category"))
             ]);
             const dataR = await resRessources.json();
             const dataC = await resCats.json();
@@ -95,9 +96,9 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
 
     const handleAction = async (id: number, action: "validate" | "suspend" | "delete") => {
         const urlMap = {
-            validate: `http://localhost:3001/admin/ressources/${id}/validate`,
-            suspend: `http://localhost:3001/admin/ressources/${id}/suspend`,
-            delete: `http://localhost:3001/admin/ressources/${id}`
+            validate: apiUrl(`/admin/ressources/${id}/validate`),
+            suspend: apiUrl(`/admin/ressources/${id}/suspend`),
+            delete: apiUrl(`/admin/ressources/${id}`)
         };
         const methodMap = { validate: "PATCH", suspend: "PATCH", delete: "DELETE" };
 
@@ -109,7 +110,7 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
     };
 
     const handleSaveRes = async () => {
-        const url = editingId ? `http://localhost:3001/admin/ressources/${editingId}` : `http://localhost:3001/ressource`;
+        const url = editingId ? apiUrl(`/admin/ressources/${editingId}`) : apiUrl("/ressource");
         const method = editingId ? "PUT" : "POST";
         try {
             const res = await fetch(url, {
@@ -140,7 +141,7 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
     const fetchComments = async (resId: number) => {
         setLoadingComments(true);
         try {
-            const res = await fetch(`http://localhost:3001/comment/ressource/${resId}`, {
+            const res = await fetch(apiUrl(`/comment/ressource/${resId}`), {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
@@ -156,7 +157,7 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
 
     const handleDeleteComment = async (commentId: number) => {
         try {
-            const res = await fetch(`http://localhost:3001/comment/admin/${commentId}`, {
+            const res = await fetch(apiUrl(`/comment/admin/${commentId}`), {
                 method: "DELETE", headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
@@ -171,7 +172,7 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
     const handlePostReply = async (parentId: number) => {
         if (!replyText.trim() || !activeResId) return;
         try {
-            const res = await fetch(`http://localhost:3001/comment`, {
+            const res = await fetch(apiUrl("/comment"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({
@@ -226,7 +227,6 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
                             placeholder="Répondre..."
                             value={replyText}
                             onValueChange={setReplyText}
-                            autoFocus
                             className="flex-1"
                         />
                         <Button size="sm" color="primary" className="bg-[#1B365D] w-full sm:w-auto" onPress={() => handlePostReply(comment.id)}>
@@ -245,7 +245,7 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
     };
 
     const handleSaveCat = async () => {
-        const url = editingCatId ? `http://localhost:3001/category/${editingCatId}` : `http://localhost:3001/category`;
+        const url = editingCatId ? apiUrl(`/category/${editingCatId}`) : apiUrl("/category");
         const method = editingCatId ? "PATCH" : "POST";
         try {
             const res = await fetch(url, {
@@ -262,7 +262,7 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
 
     const handleDeleteCat = async (id: number) => {
         try {
-            const res = await fetch(`http://localhost:3001/category/${id}`, {
+            const res = await fetch(apiUrl(`/category/${id}`), {
                 method: "DELETE", headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
@@ -443,7 +443,7 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
                         <>
                             <ModalHeader className="text-xl font-bold text-[#1B365D]">{editingCatId ? "Modifier" : "Créer"} une catégorie</ModalHeader>
                             <ModalBody>
-                                <Input label="Nom" variant="bordered" value={formCatName} onValueChange={setFormCatName} autoFocus />
+                                <Input label="Nom" variant="bordered" value={formCatName} onValueChange={setFormCatName} />
                             </ModalBody>
                             <ModalFooter>
                                 <Button variant="light" onPress={onClose}>Annuler</Button>

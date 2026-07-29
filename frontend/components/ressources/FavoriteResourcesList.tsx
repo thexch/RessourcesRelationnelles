@@ -8,6 +8,7 @@ import { Button } from "@heroui/button";
 import { Heart, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { addToast } from "@heroui/toast";
+import { apiUrl } from "@/lib/api";
 
 export default function FavoriteResourcesList({ token }: { token: string }) {
     const [favorites, setFavorites] = useState<any[]>([]);
@@ -16,7 +17,7 @@ export default function FavoriteResourcesList({ token }: { token: string }) {
     const fetchFavorites = async () => {
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:3001/ressource/favorites/me", {
+            const res = await fetch(apiUrl("/ressource/favorites/me"), {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
@@ -36,7 +37,7 @@ export default function FavoriteResourcesList({ token }: { token: string }) {
 
     const handleRemoveFavorite = async (id: number) => {
         try {
-            const res = await fetch(`http://localhost:3001/ressource/${id}/favorite`, {
+            const res = await fetch(apiUrl(`/ressource/${id}/favorite`), {
                 method: "POST",
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -55,7 +56,7 @@ export default function FavoriteResourcesList({ token }: { token: string }) {
     if (favorites.length === 0) {
         return (
             <div className="bg-white p-8 rounded-2xl border border-dashed border-gray-300 text-center text-gray-500">
-                Vous n'avez pas encore de ressources en favoris.
+                Vous n&apos;avez pas encore de ressources en favoris.
             </div>
         );
     }

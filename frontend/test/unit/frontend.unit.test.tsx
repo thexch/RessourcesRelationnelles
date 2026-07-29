@@ -10,6 +10,17 @@ jest.mock('next-auth/react', () => ({
   signIn: jest.fn(),
 }));
 
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    refresh: jest.fn(),
+    prefetch: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+  }),
+}));
+
 const mockUseSession = useSession as jest.Mock;
 
 describe('Unit tests frontend - composants principaux', () => {
@@ -49,7 +60,7 @@ describe('Unit tests frontend - composants principaux', () => {
 
     render(<NavbarComponent />);
 
-    expect(screen.getAllByText('Administration').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Espace Admin').length).toBeGreaterThan(0);
   });
 
   it('4. PublicResourcesList - affiche une carte ressource chargee depuis l API', async () => {

@@ -9,7 +9,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 @ApiTags('admin/comments (Modération)')
 @ApiBearerAuth()
 @UseGuards(AuthGuard, RolesGuard)
-@Roles(Role.MODERATEUR, Role.ADMINISTRATEUR)
+@Roles(Role.MODERATEUR, Role.ADMINISTRATEUR, Role.SUPER_ADMINISTRATEUR)
 @Controller('admin/comments')
 export class AdminCommentController {
     constructor(private readonly commentService: CommentService) { }

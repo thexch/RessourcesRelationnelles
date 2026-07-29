@@ -10,7 +10,15 @@ export class UserService {
   async findAllAdmin() {
     return this.prisma.user.findMany({
       orderBy: { createdAt: 'desc' },
-      include: {
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        firstName: true,
+        lastName: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
         _count: {
           select: { ressources: true, comments: true }
         }

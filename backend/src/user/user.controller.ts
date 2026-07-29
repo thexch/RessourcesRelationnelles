@@ -6,11 +6,6 @@ import { AuthGuard } from '../auth.guard';
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
-  @Get()
-  findAll() {
-    return this.userService.findAllAdmin();
-  }
-
   @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@Request() req) {

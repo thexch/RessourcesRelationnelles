@@ -157,7 +157,7 @@ export default function AdminRessourcesManager({ token, role }: { token: string,
 
     const handleDeleteComment = async (commentId: number) => {
         try {
-            const res = await fetch(apiUrl(`/comment/admin/${commentId}`), {
+            const res = await fetch(apiUrl(`/admin/comments/${commentId}`), {
                 method: "DELETE", headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
